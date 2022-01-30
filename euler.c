@@ -17,8 +17,8 @@ typedef struct tagARRAY_2D {
 H_ARRAY_2D Create2DZerosArray(size_t size)
 {
     H_ARRAY_2D h_array2d;
-    if ((h_array2d = (H_ARRAY_2D)malloc(sizeof(ARRAY_2D)) + size*2*sizeof(DATATYPE)) == NULL){
-        free(h_array2d);
+    if ((h_array2d = (H_ARRAY_2D)malloc(sizeof(ARRAY_2D))) == NULL)
+    {
         printf("Failed to create an array.\n");
         return NULL;
     }
@@ -36,7 +36,15 @@ H_ARRAY_2D Create2DZerosArray(size_t size)
 }
 
 
-H_ARRAY_2D euler_calculate(
+void plot_2d_array(H_ARRAY_2D A)
+{
+    for(int i=0;i<A->size ;i++){
+        printf("\ni:%d, x:%f, y:%f ", i, A->array[i][0], A->array[i][1]);
+    }
+}
+
+
+void euler_calculate(
         float (*derivative)(float),
         float delta_t,
         float x_init, float y_init,
@@ -56,8 +64,6 @@ H_ARRAY_2D euler_calculate(
         y_init      (float)     : y0
         delta_t     (float)     : delta_t -> the time step
         x_limit     (float)     : x_limit -> end point of the function
-
-    Return Type (void)
     */
     long int array_size = (int)((x_limit - x_init) / delta_t + 1);
     // A is a (array_size, 2) matrix which will be (x, y) pairs for each delta_t
@@ -79,7 +85,9 @@ H_ARRAY_2D euler_calculate(
         x0 = x1;
     }
 
-    return A;
+    // plot_2d_array(A);
+    free(A->array);
+    free(A);
  }
 
 
@@ -89,24 +97,14 @@ float y_prime(float y)
 }
 
 
-void plot_2d_array(H_ARRAY_2D A)
-{
-    for(int i=0;i<A->size ;i++){
-        printf("\ni:%d, x:%f, y:%f ", i, A->array[i][0], A->array[i][1]);
-    }
-}
-
 
 void run_test(){
     // Important! clock() is not a proper&correct way to measure the performence.
     clock_t begin = clock();
 
     // Euler method test
-    H_ARRAY_2D result_array2d;
-    for(int i=0; i<1; i++){
-        result_array2d = euler_calculate(y_prime, 2, 0, 30, 30);
-        //plot_2d_array(result_array2d);
-        free(result_array2d->array);
+    for(int i=0; i<100; i++){
+        euler_calculate(y_prime, 2, 0, 30, 30);
     }
 
     clock_t end = clock();
