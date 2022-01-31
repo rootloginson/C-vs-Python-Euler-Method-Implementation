@@ -19,7 +19,6 @@ H_ARRAY_2D Create2DZerosArray(size_t size)
     H_ARRAY_2D h_array2d;
     if ((h_array2d = (H_ARRAY_2D)malloc(sizeof(ARRAY_2D))) == NULL)
     {
-        printf("Failed to create an array.\n");
         return NULL;
     }
 
@@ -66,7 +65,7 @@ void euler_calculate(
         x_limit     (float)     : x_limit -> end point of the function
     */
     long int array_size = (int)((x_limit - x_init) / delta_t + 1);
-    // A is a (array_size, 2) matrix which will be (x, y) pairs for each delta_t
+    // A->array is a (array_size, 2) matrix which will be (x, y) pairs for each delta_t
     H_ARRAY_2D A = Create2DZerosArray(array_size);
     assert(A != NULL);
 
