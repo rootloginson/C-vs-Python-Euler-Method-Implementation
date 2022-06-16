@@ -34,16 +34,15 @@ def euler(derivative,
     Returns:
         x axis, y axis (tuple) : x_res, y_res
     """
-    x_res, y_res = [x_init], [y_init]
-    # x0: calculated x value
-    # y0: calculated y value
-    x0, y0 = x_init, y_init
-    y1 = None
-    for x0 in np.arange(x0, x_limit, delta_t):
-        y1 = y0 + derivative(y0)*delta_t
-        x_res.append(x0+delta_t)
-        y_res.append(y1)
-        y0 = y1
+    x, y = [x_init], [y_init]
+    # x: calculated x value
+    # y: calculated y value
+    y = None
+    for x in np.arange(x, x_limit, delta_t):
+        y = y + derivative(y0)*delta_t
+        x = x + delta_t
+        x_res.append(x)
+        y_res.append(y)
     return (x_res, y_res)
 
 
